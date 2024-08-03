@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CalcUi extends StatefulWidget {
    const CalcUi({super.key});
@@ -8,7 +9,8 @@ class CalcUi extends StatefulWidget {
 }
 
 class _CalcUiState extends State<CalcUi> {
-  String display = '0';
+  String input = '0';
+  String output = '=0';
 
   Widget equalButton(){
     return Expanded( child: Padding(
@@ -18,21 +20,32 @@ class _CalcUiState extends State<CalcUi> {
         color: Colors.orange.shade900,
       ), child:
       TextButton(
-        onPressed: () {  },
+        onPressed: () { calculate; },
         child: const Text('=',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 29)),
-
       ),),
     ));
   }
+  void calculate(){
+    try{
+      var parser = Parser();
+      var exp = parser.parse(input);
+      var context = ContextModel();
+      var eResult = exp.evaluate(EvaluationType.REAL,context);
+      setState(() {
+        output = eResult.toString();
+      });
+    }catch(e){
+      setState(() {
+        output='0x00';
+      });
+    }
+  }
   void onNumberPress(String num){
-    setState(() {
-      if(display=='0'){
-        setState(() {
-          display='0';
-        });
-      }
-      display+= num;
-    });
+    if(num=='AC') input='0';
+    else if(num=='Del'){
+      if(num!='0')  input=input.substring(0,input.length-1);
+    } else if(num=='Sci') {} else input+=num;
+    setState(() {});
 
   }
   Widget button ( {required String numText,Color textColor = Colors.black,Color backColor= Colors.white}) {
@@ -91,15 +104,33 @@ class _CalcUiState extends State<CalcUi> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomRight,
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 20,right: 15),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      input,
+                      style:  TextStyle(
+                        fontSize: 54.0,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(right: 20),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: Text(
-                    display,
-                    style: const TextStyle(
-                      fontSize: 58.0,
-                      color: Colors.black,
+                    output,
+                    style:  TextStyle(
+                      fontSize: 34.0,
+                      color: Colors.black45,
                     ),
                     textAlign: TextAlign.end,
                   ),
