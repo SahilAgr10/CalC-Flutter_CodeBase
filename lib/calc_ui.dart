@@ -1,7 +1,3 @@
-
-import 'dart:ui';
-
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -13,15 +9,10 @@ class CalcUi extends StatefulWidget {
 }
 
 class _CalcUiState extends State<CalcUi> {
-  String input = '0';
-  String output = '=0';
-  var iSize = 50.0;
-  var oSize = 34.0;
+  String input = '0'; String output = '=0';
+  var iSize = 50.0; var oSize = 34.0;
   Color iColor = Colors.black;
   Color oColor = Colors.black45;
-
-
-
 
   Widget equalButton(){
     return Expanded( child: Padding(
@@ -92,7 +83,6 @@ class _CalcUiState extends State<CalcUi> {
           child: Text(numText,style: TextStyle(color: textColor,fontWeight: FontWeight.w500,fontSize: 24),),
         )
     ));}
-
 
   @override
   Widget build(BuildContext context) {
