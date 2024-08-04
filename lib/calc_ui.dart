@@ -1,3 +1,7 @@
+
+import 'dart:ui';
+
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -11,6 +15,13 @@ class CalcUi extends StatefulWidget {
 class _CalcUiState extends State<CalcUi> {
   String input = '0';
   String output = '=0';
+  var iSize = 54.0;
+  var oSize = 34.0;
+  Color iColor = Colors.black;
+  Color oColor = Colors.black45;
+
+
+
 
   Widget equalButton(){
     return Expanded( child: Padding(
@@ -27,12 +38,14 @@ class _CalcUiState extends State<CalcUi> {
   }
   void calculate(){
     try{
+      var userInput = input;
+      userInput = input.replaceAll('X', '*');
       var parser = Parser();
-      var exp = parser.parse(input);
+      var exp = parser.parse(userInput);
       var context = ContextModel();
-      var eResult = exp.evaluate(EvaluationType.REAL,context);
+      var eResult = exp.evaluate(EvaluationType.REAL,context).toString();
       setState(() {
-        output ='='+ eResult.toString();
+        output ='=$eResult';
       });
     }catch(e){
       setState(() {
@@ -42,12 +55,15 @@ class _CalcUiState extends State<CalcUi> {
   }
   void onNumberPress(String num){
     if(num=='AC') {
+      iSize=54;oSize=34;
       input='0';
       output='=0';
+      iColor=Colors.black;oColor=Colors.black45;
     }
     else if(num=='Del'){
       if(num!='0')  input=input.substring(0,input.length-1);
     } else if(num=='Sci') {
+      iSize=32;oSize=50;iColor=Colors.black45;oColor=Colors.black;
       calculate();
     } else input+=num;
     setState(() {});
@@ -119,8 +135,8 @@ class _CalcUiState extends State<CalcUi> {
                     child: Text(
                       input,
                       style:  TextStyle(
-                        fontSize: 54.0,
-                        color: Colors.black,
+                        fontSize: iSize,
+                        color: iColor,
                       ),
                       textAlign: TextAlign.end,
                     ),
@@ -134,8 +150,8 @@ class _CalcUiState extends State<CalcUi> {
                   child: Text(
                     output,
                     style:  TextStyle(
-                      fontSize: 34.0,
-                      color: Colors.black45,
+                      fontSize: oSize,
+                      color: oColor,
                     ),
                     textAlign: TextAlign.end,
                   ),
