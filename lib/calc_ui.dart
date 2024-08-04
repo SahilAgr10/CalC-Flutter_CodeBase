@@ -32,7 +32,7 @@ class _CalcUiState extends State<CalcUi> {
       var context = ContextModel();
       var eResult = exp.evaluate(EvaluationType.REAL,context);
       setState(() {
-        output = eResult.toString();
+        output ='='+ eResult.toString();
       });
     }catch(e){
       setState(() {
@@ -41,10 +41,15 @@ class _CalcUiState extends State<CalcUi> {
     }
   }
   void onNumberPress(String num){
-    if(num=='AC') input='0';
+    if(num=='AC') {
+      input='0';
+      output='=0';
+    }
     else if(num=='Del'){
       if(num!='0')  input=input.substring(0,input.length-1);
-    } else if(num=='Sci') {} else input+=num;
+    } else if(num=='Sci') {
+      calculate();
+    } else input+=num;
     setState(() {});
 
   }
