@@ -15,7 +15,7 @@ class CalcUi extends StatefulWidget {
 class _CalcUiState extends State<CalcUi> {
   String input = '0';
   String output = '=0';
-  var iSize = 54.0;
+  var iSize = 50.0;
   var oSize = 34.0;
   Color iColor = Colors.black;
   Color oColor = Colors.black45;
@@ -39,7 +39,8 @@ class _CalcUiState extends State<CalcUi> {
   void calculate(){
     try{
       var userInput = input;
-      userInput = input.replaceAll('X', '*');
+      userInput = input.replaceAll('x', '*');
+      userInput=userInput.replaceAll('÷', '/');
       var parser = Parser();
       var exp = parser.parse(userInput);
       var context = ContextModel();
@@ -67,13 +68,14 @@ class _CalcUiState extends State<CalcUi> {
       iSize=32;oSize=50;iColor=Colors.black45;oColor=Colors.black;
       calculate();
     } else {
-      if(input.length>=11) iSize =27;
+      if(input.length>=11) iSize =45;
+      if(input.length>=14) iSize = 40;
         input+=num;
     }
     setState(() {});
 
   }
-  Widget button ( {required String numText,Color textColor = Colors.black,Color backColor= Colors.white}) {
+  Widget button ( {required String numText,Color textColor = Colors.black,Color backColor= Colors.white,double textSize=24}) {
     return (Expanded(
         child:TextButton(
           onPressed: () {
@@ -161,17 +163,17 @@ class _CalcUiState extends State<CalcUi> {
                   ),
                 ),
               ),
-              const Divider(thickness: 1.5,),
+              const Divider(thickness: 1,),
               Row(children: [
                 button(numText: 'AC',textColor: Colors.orange.shade900,),
                 button(numText: "Del",textColor: Colors.orange.shade900),
                 button(numText: '%',textColor: Colors.orange.shade900),
-                button(numText: '/',textColor: Colors.orange.shade900),],),
+                button(numText: '÷',textColor: Colors.orange.shade900,textSize: 30),],),
               Row(children: [
                 button(numText: '7',),
                 button(numText: "8"),
                 button(numText: '9'),
-                button(numText: 'X',textColor: Colors.orange.shade900),
+                button(numText: 'x',textColor: Colors.orange.shade900,textSize: 39),
 
               ],),
               Row(children: [
