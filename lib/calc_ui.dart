@@ -44,6 +44,7 @@ class _CalcUiState extends State<CalcUi> {
       var exp = parser.parse(userInput);
       var context = ContextModel();
       var eResult = exp.evaluate(EvaluationType.REAL,context).toString();
+      if(eResult.length>=11) oSize=40;
       setState(() {
         output ='=$eResult';
       });
@@ -65,7 +66,10 @@ class _CalcUiState extends State<CalcUi> {
     } else if(num=='Sci') {
       iSize=32;oSize=50;iColor=Colors.black45;oColor=Colors.black;
       calculate();
-    } else input+=num;
+    } else {
+      if(input.length>=11) iSize =27;
+        input+=num;
+    }
     setState(() {});
 
   }
