@@ -19,6 +19,7 @@ class _CalcUiState extends State<CalcUi> {
   bool sciFi = false;
   var pSize = 24.0;
   double textSize=24;
+  String sciText = 'Sci';
 
   Widget equalButton() {
     return Expanded(
@@ -69,22 +70,22 @@ class _CalcUiState extends State<CalcUi> {
     }
   }
 
-  void onNumberPress(String num) {
-    if (num == 'AC') {
+  void onNumberPress(String text) {
+    if (text == 'AC') {
       iSize = 54;
       oSize = 34;
       input = '0';
       output = '';
       iColor = Colors.black;
       oColor = Colors.black45;
-    } else if (num == '⌫') {
+    } else if (text == '⌫') {
       if (input.isNotEmpty && input != '0') {
         input = input.substring(0, input.length - 1);
         if (input.isEmpty) {
           input = '0';
         }
       }
-    } else if (num == 'Sci') {
+    } else if (text == sciText) {
       setState(() {
         pSize=15;
         sciFi = !sciFi;
@@ -92,9 +93,9 @@ class _CalcUiState extends State<CalcUi> {
       });
     } else {
       if (input == '0') {
-        input = num;
+        input = text;
       } else {
-        input += num;
+        input += text;
       }
       if (input.length >= 11) iSize = 45;
       if (input.length >= 14) iSize = 40;
@@ -315,11 +316,8 @@ class _CalcUiState extends State<CalcUi> {
               ),
               Row(
                 children: [
-                  if(sciFi) button(numText: 'e',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-                  button(
-                    numText: 'Sci',
-                    textColor: Colors.orange.shade900,
-                  ),
+                  button(numText: 'Sci',textColor: Colors.orange.shade900),
+                  if(sciFi) button(numText: 'e',textColor: Colors.black.withOpacity(0.9),textSize: 20),
                   button(numText: "0"),
                   button(numText: '.'),
                   equalButton(),
