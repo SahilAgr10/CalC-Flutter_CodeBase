@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -15,12 +16,14 @@ class _CalcUiState extends State<CalcUi> {
   var oSize = 34.0;
   Color iColor = Colors.black;
   Color oColor = Colors.black45;
-  bool Scifi = false;
+  bool sciFi = false;
+  var pSize = 24.0;
+  double textSize=24;
 
   Widget equalButton() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
+        padding: const EdgeInsets.only(bottom: 17.0),
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -83,7 +86,9 @@ class _CalcUiState extends State<CalcUi> {
       }
     } else if (num == 'Sci') {
       setState(() {
-        Scifi = !Scifi; // Toggle scientific mode
+        pSize=15;
+        sciFi = !sciFi;
+        if(sciFi==false) pSize=24;// Toggle scientific mode
       });
     } else {
       if (input == '0') {
@@ -101,7 +106,7 @@ class _CalcUiState extends State<CalcUi> {
       {required String numText,
         Color textColor = Colors.black,
         Color backColor = Colors.white,
-        double textSize = 20}) {
+        double textSize = 22}) {
     return Expanded(
         child: TextButton(
           onPressed: () {
@@ -110,7 +115,7 @@ class _CalcUiState extends State<CalcUi> {
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             backgroundColor: backColor,
-            padding: const EdgeInsets.all(18),
+            padding: EdgeInsets.all(pSize),
             textStyle: const TextStyle(
               fontSize: 8.0,
             ),
@@ -118,7 +123,7 @@ class _CalcUiState extends State<CalcUi> {
           child: Text(
             numText,
             style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w500, fontSize: textSize),
+                color: textColor, fontWeight: FontWeight.w400, fontSize: textSize),
           ),
         ));
   }
@@ -131,43 +136,43 @@ class _CalcUiState extends State<CalcUi> {
         drawer: const Drawer(
           shadowColor: Colors.white,
         ),
-        appBar: AppBar(
-          title: const Text(
-            'Calculator',
-            style: TextStyle(fontSize: 20, color: Colors.black),
-          ),
-          toolbarHeight: 60,
-          backgroundColor: Colors.white,
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.grid_view_outlined,
-                size: 17,
-              ),
-              onPressed: () {
-                // TODO: Implement grid view functionality
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.home,
-                size: 20,
-              ),
-              onPressed: () {
-                // TODO: Implement home functionality
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.more_vert,
-                size: 20,
-              ),
-              onPressed: () {
-                // TODO: Implement more options functionality
-              },
-            ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   title: const Text(
+        //     'Calculator',
+        //     style: TextStyle(fontSize: 20, color: Colors.black),
+        //   ),
+        //   toolbarHeight: 60,
+        //   backgroundColor: Colors.white,
+        //   actions: [
+        //     IconButton(
+        //       icon: const Icon(
+        //         Icons.grid_view_outlined,
+        //         size: 17,
+        //       ),
+        //       onPressed: () {
+        //         // TODO: Implement grid view functionality
+        //       },
+        //     ),
+        //     IconButton(
+        //       icon: const Icon(
+        //         Icons.home,
+        //         size: 20,
+        //       ),
+        //       onPressed: () {
+        //         // TODO: Implement home functionality
+        //       },
+        //     ),
+        //     IconButton(
+        //       icon: const Icon(
+        //         Icons.more_vert,
+        //         size: 20,
+        //       ),
+        //       onPressed: () {
+        //         // TODO: Implement more options functionality
+        //       },
+        //     ),
+        //   ],
+        // ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -207,29 +212,29 @@ class _CalcUiState extends State<CalcUi> {
               const Divider(
                 thickness: 1,
               ),
-        if (Scifi) ...[
+        if (sciFi) ...[
           Row(
             children: [
-              button(numText: '2nd', textColor: Colors.black.withOpacity(0.5)),
-              button(numText: "deg",textColor: Colors.black.withOpacity(0.5)),
-              button(numText: 'sin',textColor: Colors.black.withOpacity(0.5)),
-              button(numText: 'cos', textColor: Colors.black.withOpacity(0.5),),
-              button(numText: 'tan', textColor: Colors.black.withOpacity(0.5),),
+              button(numText: '2nd', textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: "deg",textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: 'sin',textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: 'cos', textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: 'tan', textColor: Colors.black.withOpacity(0.7),textSize: 20),
             ],
           ),
           Row(
             children: [
-              button(numText: 'xʸ', textColor: Colors.black.withOpacity(0.5)),
-              button(numText: "log",textColor: Colors.black.withOpacity(0.5)),
-              button(numText: 'ln',textColor: Colors.black.withOpacity(0.5)),
-              button(numText: '(', textColor: Colors.black.withOpacity(0.5),),
-              button(numText: ')', textColor: Colors.black.withOpacity(0.5),),
+              button(numText: 'xʸ', textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: "log",textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: 'ln',textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: '(', textColor: Colors.black.withOpacity(0.7),textSize: 20),
+              button(numText: ')', textColor: Colors.black.withOpacity(0.7),textSize: 20),
             ],
           ),
         ],
               Row(
                 children: [
-                  if(Scifi) button(numText: '√',textColor: Colors.black.withOpacity(0.5)),
+                  if(sciFi) button(numText: '√',textColor: Colors.black.withOpacity(0.7),textSize: 20),
                   button(
                     numText: 'AC',
                     textColor: Colors.orange.shade900,
@@ -237,7 +242,7 @@ class _CalcUiState extends State<CalcUi> {
                   button(
                     numText: "⌫",
                     textColor: Colors.orange.shade900,
-                    textSize: 26
+
                   ),
                   button(
                     numText: '%',
@@ -253,7 +258,7 @@ class _CalcUiState extends State<CalcUi> {
               ),
               Row(
                 children: [
-                  if(Scifi) button(numText: 'x!',textColor: Colors.black.withOpacity(0.5)),
+                  if(sciFi) button(numText: 'x!',textColor: Colors.black.withOpacity(0.7),textSize: 20),
                   button(
                     numText: '7',
                   ),
@@ -268,7 +273,7 @@ class _CalcUiState extends State<CalcUi> {
               ),
               Row(
                 children: [
-                  if(Scifi) button(numText: '1/x',textColor: Colors.black.withOpacity(0.5)),
+                  if(sciFi) button(numText: '1/x',textColor: Colors.black.withOpacity(0.7),textSize: 20),
                   button(
                     numText: '4',
                     textColor: Colors.black,
@@ -289,7 +294,7 @@ class _CalcUiState extends State<CalcUi> {
               ),
               Row(
                 children: [
-                  if(Scifi) button(numText: 'π',textColor: Colors.black.withOpacity(0.5)),
+                  if(sciFi) button(numText: 'π',textColor: Colors.black.withOpacity(0.7),textSize: 20),
                   button(
                     numText: '1',
                     textColor: Colors.black,
@@ -310,7 +315,7 @@ class _CalcUiState extends State<CalcUi> {
               ),
               Row(
                 children: [
-                  if(Scifi) button(numText: 'e',textColor: Colors.black.withOpacity(0.5)),
+                  if(sciFi) button(numText: 'e',textColor: Colors.black.withOpacity(0.7),textSize: 20),
                   button(
                     numText: 'Sci',
                     textColor: Colors.orange.shade900,
