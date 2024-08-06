@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -18,7 +17,7 @@ class _CalcUiState extends State<CalcUi> {
   Color oColor = Colors.black45;
   bool sciFi = false;
   var pSize = 24.0;
-  double textSize=24;
+  double textSize = 24;
   String sciText = 'Sci';
 
   Widget equalButton() {
@@ -65,7 +64,7 @@ class _CalcUiState extends State<CalcUi> {
       });
     } catch (e) {
       setState(() {
-        output = '0x00';
+        output = 'Error';
       });
     }
   }
@@ -87,11 +86,20 @@ class _CalcUiState extends State<CalcUi> {
       }
     } else if (text == sciText) {
       setState(() {
-        pSize=15;
+        pSize = 15;
         sciFi = !sciFi;
-        if(sciFi==false) pSize=24;// Toggle scientific mode
+        if (sciFi == false) pSize = 24; // Toggle scientific mode
       });
     } else {
+      if (text == '.') {
+        if (input[input.length - 1]=='.') {
+          return;
+        }
+      } else if (isOperator(text)) {
+        if (isOperator(input[input.length - 1])) {
+          return;
+        }if(input[input.length - 1]=='.') return;
+      }
       if (input == '0') {
         input = text;
       } else {
@@ -103,30 +111,36 @@ class _CalcUiState extends State<CalcUi> {
     setState(() {});
   }
 
-  Widget button(
-      {required String numText,
-        Color textColor = Colors.black,
-        Color backColor = Colors.white,
-        double textSize = 22}) {
+  bool isOperator(String text) {
+    return text == '+' || text == '-' || text == 'x' || text == '÷' || text == '%';
+  }
+
+  Widget button({
+    required String numText,
+    Color textColor = Colors.black,
+    Color backColor = Colors.white,
+    double textSize = 22,
+  }) {
     return Expanded(
-        child: TextButton(
-          onPressed: () {
-            onNumberPress(numText);
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-            backgroundColor: backColor,
-            padding: EdgeInsets.all(pSize),
-            textStyle: const TextStyle(
-              fontSize: 8.0,
-            ),
+      child: TextButton(
+        onPressed: () {
+          onNumberPress(numText);
+        },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+          backgroundColor: backColor,
+          padding: EdgeInsets.all(pSize),
+          textStyle: const TextStyle(
+            fontSize: 8.0,
           ),
-          child: Text(
-            numText,
-            style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w400, fontSize: textSize),
-          ),
-        ));
+        ),
+        child: Text(
+          numText,
+          style: TextStyle(
+              color: textColor, fontWeight: FontWeight.w400, fontSize: textSize),
+        ),
+      ),
+    );
   }
 
   @override
@@ -137,193 +151,156 @@ class _CalcUiState extends State<CalcUi> {
         drawer: const Drawer(
           shadowColor: Colors.white,
         ),
-        // appBar: AppBar(
-        //   title: const Text(
-        //     'Calculator',
-        //     style: TextStyle(fontSize: 20, color: Colors.black),
-        //   ),
-        //   toolbarHeight: 60,
-        //   backgroundColor: Colors.white,
-        //   actions: [
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.grid_view_outlined,
-        //         size: 17,
-        //       ),
-        //       onPressed: () {
-        //         // TODO: Implement grid view functionality
-        //       },
-        //     ),
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.home,
-        //         size: 20,
-        //       ),
-        //       onPressed: () {
-        //         // TODO: Implement home functionality
-        //       },
-        //     ),
-        //     IconButton(
-        //       icon: const Icon(
-        //         Icons.more_vert,
-        //         size: 20,
-        //       ),
-        //       onPressed: () {
-        //         // TODO: Implement more options functionality
-        //       },
-        //     ),
-        //   ],
-        // ),
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Container(
-                  alignment: Alignment.bottomRight,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 20, right: 15),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Text(
-                      input,
-                      style: TextStyle(
-                        fontSize: iSize,
-                        color: iColor,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(right: 20),
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.bottomRight,
+                width: double.infinity,
+                padding: const EdgeInsets.only(top: 20, right: 15),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: Text(
-                    output,
+                    input,
                     style: TextStyle(
-                      fontSize: oSize,
-                      color: oColor,
+                      fontSize: iSize,
+                      color: iColor,
                     ),
                     textAlign: TextAlign.end,
                   ),
                 ),
               ),
-              const Divider(
-                thickness: 1,
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 20),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Text(
+                  output,
+                  style: TextStyle(
+                    fontSize: oSize,
+                    color: oColor,
+                  ),
+                  textAlign: TextAlign.end,
+                ),
               ),
-        if (sciFi) ...[
-          Row(
-            children: [
-              button(numText: '2nd', textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: "deg",textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: 'sin',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: 'cos', textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: 'tan', textColor: Colors.black.withOpacity(0.7),textSize: 20),
+            ),
+            const Divider(
+              thickness: 1,
+            ),
+            if (sciFi) ...[
+              Row(
+                children: [
+                  button(numText: '2nd', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: "deg", textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: 'sin', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: 'cos', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: 'tan', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                ],
+              ),
+              Row(
+                children: [
+                  button(numText: 'xʸ', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: "log", textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: 'ln', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: '(', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                  button(numText: ')', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                ],
+              ),
             ],
-          ),
-          Row(
-            children: [
-              button(numText: 'xʸ', textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: "log",textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: 'ln',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: '(', textColor: Colors.black.withOpacity(0.7),textSize: 20),
-              button(numText: ')', textColor: Colors.black.withOpacity(0.7),textSize: 20),
-            ],
-          ),
-        ],
-              Row(
-                children: [
-                  if(sciFi) button(numText: '√',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-                  button(
-                    numText: 'AC',
-                    textColor: Colors.orange.shade900,
-                  ),
-                  button(
-                    numText: "⌫",
-                    textColor: Colors.orange.shade900,
-
-                  ),
-                  button(
-                    numText: '%',
-                    textColor: Colors.orange.shade900,
-                    textSize: 26
-                  ),
-                  button(
-                    numText: '÷',
-                    textColor: Colors.orange.shade900,
-                    textSize: 32,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  if(sciFi) button(numText: 'x!',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-                  button(
-                    numText: '7',
-                  ),
-                  button(numText: "8"),
-                  button(numText: '9'),
-                  button(
-                    numText: 'x',
-                    textColor: Colors.orange.shade900.withOpacity(0.9),
-                    textSize: 30,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  if(sciFi) button(numText: '1/x',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-                  button(
-                    numText: '4',
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: "5",
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: '6',
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: '-',
-                    textColor: Colors.orange.shade900,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  if(sciFi) button(numText: 'π',textColor: Colors.black.withOpacity(0.7),textSize: 20),
-                  button(
-                    numText: '1',
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: "2",
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: '3',
-                    textColor: Colors.black,
-                  ),
-                  button(
-                    numText: '+',
-                    textColor: Colors.orange.shade900,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  button(numText: 'Sci',textColor: Colors.orange.shade900),
-                  if(sciFi) button(numText: 'e',textColor: Colors.black.withOpacity(0.9),textSize: 20),
-                  button(numText: "0"),
-                  button(numText: '.'),
-                  equalButton(),
-                ],
-              )
-            ]),
+            Row(
+              children: [
+                if (sciFi) button(numText: '√', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                button(
+                  numText: 'AC',
+                  textColor: Colors.orange.shade900,
+                ),
+                button(
+                  numText: "⌫",
+                  textColor: Colors.orange.shade900,
+                ),
+                button(
+                  numText: '%',
+                  textColor: Colors.orange.shade900,
+                  textSize: 26,
+                ),
+                button(
+                  numText: '÷',
+                  textColor: Colors.orange.shade900,
+                  textSize: 32,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                if (sciFi) button(numText: 'x!', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                button(
+                  numText: '7',
+                ),
+                button(numText: "8"),
+                button(numText: '9'),
+                button(
+                  numText: 'x',
+                  textColor: Colors.orange.shade900.withOpacity(0.9),
+                  textSize: 30,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                if (sciFi) button(numText: '1/x', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                button(
+                  numText: '4',
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: "5",
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: '6',
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: '-',
+                  textColor: Colors.orange.shade900,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                if (sciFi) button(numText: 'π', textColor: Colors.black.withOpacity(0.7), textSize: 20),
+                button(
+                  numText: '1',
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: "2",
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: '3',
+                  textColor: Colors.black,
+                ),
+                button(
+                  numText: '+',
+                  textColor: Colors.orange.shade900,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                button(numText: 'Sci', textColor: Colors.orange.shade900),
+                if (sciFi) button(numText: 'e', textColor: Colors.black.withOpacity(0.9), textSize: 20),
+                button(numText: "0"),
+                button(numText: '.'),
+                equalButton(),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
