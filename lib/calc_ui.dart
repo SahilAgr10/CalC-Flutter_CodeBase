@@ -57,7 +57,12 @@ class _CalcUiState extends State<CalcUi> {
       var exp = parser.parse(userInput);
       var context = ContextModel();
       var eResult =
-      exp.evaluate(EvaluationType.REAL, context).toStringAsFixed(2);
+      exp.evaluate(EvaluationType.REAL, context);
+      if(eResult.toString().endsWith(".0")) {
+        eResult = eResult.toString().substring(0,eResult.toString().length-2);
+      } else{
+        eResult = eResult.toStringAsFixed(2);
+      }
       if (eResult.length >= 11) oSize = 40;
       setState(() {
         output = '=$eResult';
@@ -115,17 +120,10 @@ class _CalcUiState extends State<CalcUi> {
     return text == '+' || text == '-' || text == 'x' || text == '÷' || text == '%';
   }
 
-  Widget button({
-    required String numText,
-    Color textColor = Colors.black,
-    Color backColor = Colors.white,
-    double textSize = 22,
-  }) {
+  Widget button({required String numText, Color textColor = Colors.black, Color backColor = Colors.white, double textSize = 22,}) {
     return Expanded(
       child: TextButton(
-        onPressed: () {
-          onNumberPress(numText);
-        },
+        onPressed: () => onNumberPress(numText),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           backgroundColor: backColor,
@@ -134,11 +132,7 @@ class _CalcUiState extends State<CalcUi> {
             fontSize: 8.0,
           ),
         ),
-        child: Text(
-          numText,
-          style: TextStyle(
-              color: textColor, fontWeight: FontWeight.w400, fontSize: textSize),
-        ),
+        child: Text(numText, style: TextStyle(color: textColor, fontWeight: FontWeight.w400, fontSize: textSize),),
       ),
     );
   }
@@ -148,9 +142,7 @@ class _CalcUiState extends State<CalcUi> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
-        drawer: const Drawer(
-          shadowColor: Colors.white,
-        ),
+        drawer: const Drawer(shadowColor: Colors.white,),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -160,36 +152,16 @@ class _CalcUiState extends State<CalcUi> {
                 alignment: Alignment.bottomRight,
                 width: double.infinity,
                 padding: const EdgeInsets.only(top: 20, right: 15),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Text(
-                    input,
-                    style: TextStyle(
-                      fontSize: iSize,
-                      color: iColor,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                ),
+                child: Padding( padding: const EdgeInsets.only(right: 20),
+                  child: Text(input, style: TextStyle(fontSize: iSize, color: iColor,), textAlign: TextAlign.end,),),
               ),
             ),
             Container(
               padding: const EdgeInsets.only(right: 20),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Text(
-                  output,
-                  style: TextStyle(
-                    fontSize: oSize,
-                    color: oColor,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-              ),
+              child: Padding( padding: const EdgeInsets.only(right: 20),
+                child: Text(output, style: TextStyle(fontSize: oSize, color: oColor,), textAlign: TextAlign.end,),),
             ),
-            const Divider(
-              thickness: 1,
-            ),
+            const Divider(thickness: 1,),
             if (sciFi) ...[
               Row(
                 children: [
@@ -197,109 +169,49 @@ class _CalcUiState extends State<CalcUi> {
                   button(numText: "deg", textColor: Colors.black.withOpacity(0.7), textSize: 20),
                   button(numText: 'sin', textColor: Colors.black.withOpacity(0.7), textSize: 20),
                   button(numText: 'cos', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                  button(numText: 'tan', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                ],
-              ),
+                  button(numText: 'tan', textColor: Colors.black.withOpacity(0.7), textSize: 20),],),
               Row(
                 children: [
                   button(numText: 'xʸ', textColor: Colors.black.withOpacity(0.7), textSize: 20),
                   button(numText: "log", textColor: Colors.black.withOpacity(0.7), textSize: 20),
                   button(numText: 'ln', textColor: Colors.black.withOpacity(0.7), textSize: 20),
                   button(numText: '(', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                  button(numText: ')', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                ],
-              ),
-            ],
+                  button(numText: ')', textColor: Colors.black.withOpacity(0.7), textSize: 20),],),],
             Row(
               children: [
                 if (sciFi) button(numText: '√', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                button(
-                  numText: 'AC',
-                  textColor: Colors.orange.shade900,
-                ),
-                button(
-                  numText: "⌫",
-                  textColor: Colors.orange.shade900,
-                ),
-                button(
-                  numText: '%',
-                  textColor: Colors.orange.shade900,
-                  textSize: 26,
-                ),
-                button(
-                  numText: '÷',
-                  textColor: Colors.orange.shade900,
-                  textSize: 32,
-                ),
-              ],
-            ),
+                button(numText: 'AC', textColor: Colors.orange.shade900,),
+                button(numText: "⌫", textColor: Colors.orange.shade900,),
+                button(numText: '%', textColor: Colors.orange.shade900, textSize: 26,),
+                button(numText: '÷', textColor: Colors.orange.shade900, textSize: 32,),],),
             Row(
               children: [
                 if (sciFi) button(numText: 'x!', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                button(
-                  numText: '7',
-                ),
+                button(numText: '7',),
                 button(numText: "8"),
                 button(numText: '9'),
-                button(
-                  numText: 'x',
-                  textColor: Colors.orange.shade900.withOpacity(0.9),
-                  textSize: 30,
-                ),
-              ],
-            ),
+                button(numText: 'x', textColor: Colors.orange.shade900.withOpacity(0.9), textSize: 30,),],),
             Row(
               children: [
                 if (sciFi) button(numText: '1/x', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                button(
-                  numText: '4',
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: "5",
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: '6',
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: '-',
-                  textColor: Colors.orange.shade900,
-                ),
-              ],
-            ),
+                button(numText: '4',),
+                button(numText: "5", ),
+                button(numText: '6',),
+                button(numText: '-', textColor: Colors.orange.shade900,),],),
             Row(
               children: [
                 if (sciFi) button(numText: 'π', textColor: Colors.black.withOpacity(0.7), textSize: 20),
-                button(
-                  numText: '1',
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: "2",
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: '3',
-                  textColor: Colors.black,
-                ),
-                button(
-                  numText: '+',
-                  textColor: Colors.orange.shade900,
-                ),
-              ],
-            ),
+                button(numText: '1',),
+                button(numText: "2", ),
+                button(numText: '3',),
+                button(numText: '+', textColor: Colors.orange.shade900,),],),
             Row(
               children: [
                 button(numText: 'Sci', textColor: Colors.orange.shade900),
                 if (sciFi) button(numText: 'e', textColor: Colors.black.withOpacity(0.9), textSize: 20),
                 button(numText: "0"),
                 button(numText: '.'),
-                equalButton(),
-              ],
-            )
-          ],
+                equalButton(),],)],
         ),
       ),
     );
